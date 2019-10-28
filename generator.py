@@ -56,8 +56,9 @@ def sample_sequence(model, length, context, num_samples=1, temperature=1, top_k=
     context = context.unsqueeze(0).repeat(num_samples, 1)
     generated = context
     with torch.no_grad():
-        for _ in trange(length):
-
+        progress_bar = st.progress(0)
+        for step in trange(length):
+            progress_bar.progress(step / length)
             inputs = {'input_ids': generated}
             if is_xlnet:
                 # XLNet is a direct (predict same token, not next token) and bi-directional model by default
